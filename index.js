@@ -8,6 +8,7 @@ const pubsub = new PubSub()
 
 
 const server = new ApolloServer({
+  connectToDevTools: true,
   typeDefs,
   resolvers,
   context: ({req}) => ({req, pubsub})
