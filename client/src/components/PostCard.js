@@ -5,16 +5,13 @@ import { Link } from "react-router-dom";
 
 import LikeButton from './LikeButton'
 import { AuthContext } from "../context/auth";
+import DeleteButton from './DeleteButton'
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) {
   const { user } = useContext(AuthContext);
 
-
-  function commentOnPost() {
-    console.log("comment");
-  }
   return (
     <Card>
       <Card.Content>
@@ -38,11 +35,7 @@ function PostCard({
             {commentCount}
           </Label>
         </Button>
-        {user && user.username === username && (
-          <Button  color="red" onClick={() => console.log("delete post")} floated='right'>
-            <Icon name="trash" style={{margin: 0}}/>
-          </Button>
-        )}
+        {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
     </Card>
   );
