@@ -5,7 +5,7 @@ import { Card, Grid } from "semantic-ui-react";
 import moment from "moment";
 import LikeButton from "../components/LikeButton";
 import { AuthContext } from "../context/auth";
-import { Button, Icon, Form, Label, Image } from "semantic-ui-react";
+import { Button, Icon, Form, Label, Image, Popup } from "semantic-ui-react";
 import DeleteButton from "../components/DeleteButton";
 import { useMutation } from "@apollo/client";
 
@@ -73,10 +73,10 @@ export default function SinglePost(props) {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{ id, likeCount, likes }} />
-                <Button
+                <Popup content='Comment on post' inverted trigger={<Button
                   as="div"
                   labelPosition="right"
-                  onClick={() => console.log("comment")}
+                  onClick={() => commentInputRef.current.focus()}
                 >
                   <Button basic color="blue">
                     <Icon name="comments" />
@@ -84,7 +84,7 @@ export default function SinglePost(props) {
                   <Label basic color="blue" pointing="left">
                     {commentCount}
                   </Label>
-                </Button>
+                </Button>} />
                 {user && user.username === username && (
                   <DeleteButton postId={id} callback={deletePostCallback} />
                 )}

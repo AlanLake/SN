@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { Button, Card, Icon, Label, Image } from "semantic-ui-react";
+import { Button, Card, Icon, Label, Popup, Image } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-import LikeButton from './LikeButton'
+import LikeButton from "./LikeButton";
 import { AuthContext } from "../context/auth";
-import DeleteButton from './DeleteButton'
+import DeleteButton from "./DeleteButton";
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
@@ -25,16 +25,22 @@ function PostCard({
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-       <LikeButton user={user} post={{id, likes, likeCount}}></LikeButton>
-        <Button labelPosition="right" as={Link} to={`/posts/${id}`}>
-          <Button color="teal" basic>
-            <Icon name="comment" />
-            Comment
-          </Button>
-          <Label basic color="teal" pointing="left">
-            {commentCount}
-          </Label>
-        </Button>
+        <LikeButton user={user} post={{ id, likes, likeCount }}></LikeButton>
+        <Popup
+          content="Comment on post"
+          inverted
+          trigger={
+            <Button labelPosition="right" as={Link} to={`/posts/${id}`}>
+              <Button color="teal" basic>
+                <Icon name="comment" />
+                Comment
+              </Button>
+              <Label basic color="teal" pointing="left">
+                {commentCount}
+              </Label>
+            </Button>
+          }
+        />
         {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
     </Card>
