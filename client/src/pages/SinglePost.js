@@ -8,6 +8,7 @@ import { AuthContext } from "../context/auth";
 import { Button, Icon, Form, Label, Image, Popup } from "semantic-ui-react";
 import DeleteButton from "../components/DeleteButton";
 import { useMutation } from "@apollo/client";
+import EditButton from "../components/EditButton";
 
 export default function SinglePost(props) {
   const postId = props.match.params.postId;
@@ -85,8 +86,9 @@ export default function SinglePost(props) {
                     {commentCount}
                   </Label>
                 </Button>} />
-                {user && user.username === username && (
-                  <DeleteButton postId={id} callback={deletePostCallback} />
+                {user && user.username === username && (<>
+                  <EditButton postId={id} body={body}></EditButton>
+                  <DeleteButton postId={id} callback={deletePostCallback} /></>
                 )}
               </Card.Content>
             </Card>
