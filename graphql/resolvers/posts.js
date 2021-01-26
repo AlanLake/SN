@@ -30,8 +30,8 @@ module.exports = {
       const user = checkAuth(context);
       console.log(user);
 
-      if(body.trim() === "") {
-        throw new Error('Post must not be empty')
+      if (body.trim() === "") {
+        throw new Error("Post must not be empty");
       }
 
       const newPost = new Post({
@@ -43,11 +43,26 @@ module.exports = {
 
       const post = await newPost.save();
 
-      context.pubsub.publish('NEW_POST', {
-        newPost: post
-      })
+      context.pubsub.publish("NEW_POST", {
+        newPost: post,
+      });
 
       return post;
+    },
+    async editPost(_, { postId, body }, context) {
+      const user = checkAuth(context);
+      try {
+        const post = await Post.findById(postId);
+        if (user.username === post.username) {
+          post.body = body
+          post.save()
+          return post;
+        } else {
+          throw new AuthenticationError("Action not allowed");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
     },
     async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
@@ -86,7 +101,7 @@ module.exports = {
   },
   Subscription: {
     newPost: {
-      subscribe: (_, __, {pubsub}) => pubsub.asyncIterator("NEW_POST")
-    }
-  }
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("NEW_POST"),
+    },
+  },
 };
