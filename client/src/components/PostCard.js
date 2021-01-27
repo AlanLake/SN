@@ -20,7 +20,7 @@ function PostCard({
           size="mini"
           src="https://react.semantic-ui.com/images/avatar/large/molly.png"
         />
-        <Card.Header>{username}</Card.Header>
+        <Card.Header as={Link} to={`/profile/${username}`}>{username}</Card.Header>
         <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
         <Card.Description>{body}</Card.Description>
       </Card.Content>

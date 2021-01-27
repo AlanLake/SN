@@ -13,6 +13,7 @@ import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import SinglePost from './pages/SinglePost.js'
+import UserPage from './pages/UserPage'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <AuthRoute exact path="/login" component={Login} />
           <AuthRoute exact path="/register" component={Register} />
           <Route exact path ='/posts/:postId' component={SinglePost}></Route>
+          <Route exact path ='/profile/:username' component={UserPage}></Route>
         </Router>
       </Container>
     </AuthProvider>

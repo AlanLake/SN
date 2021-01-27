@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
-import { Button, Form, Popup } from "semantic-ui-react";
+import { Button, Form, Icon, Popup } from "semantic-ui-react";
 
-export default function EditButton({postId, body }) {
+export default function EditButton({postId }) {
+  const [openEdit, setOpenEdit] = useState(false);
    const [editedPost,setEditedPost] = useState('')
   const [editPost, { loading, error }] = useMutation(EDIT_POST_MUTATION, {
     variables: {postId: postId, body: editedPost},
@@ -11,7 +12,6 @@ export default function EditButton({postId, body }) {
     function handleEditPost(e){
     e.preventDefault()
     editPost(setEditedPost)
-    console.log(body)
   }
 
   return (
@@ -20,25 +20,36 @@ export default function EditButton({postId, body }) {
         content={"Edit Post"}
         inverted
         trigger={
-          <Form
-            onSubmit={e => handleEditPost(e)}
+          <Button
+            basic
+            color="blue"
+            onClick={() => {
+              setOpenEdit(!openEdit);
+            }}
           >
-            <h2>Edit your post</h2>
-            <Form.Field>
-              <Form.Input
-                placeholder="Edit your post"
-                onChange={e => {setEditedPost(e.target.value)
-                console.log(e.target.value);}}
-                name="body"
-                type="text"
-              />
-              <Button type="submit" color="teal">
-                Submit
-              </Button>
-            </Form.Field>
-          </Form>
+            <Icon name="edit" />
+          </Button>
         }
       />
+      {openEdit ? (
+        <Form onSubmit={(e) => handleEditPost(e)}>
+          <Form.Field>
+            <Form.Input
+              placeholder="Edit your post"
+              onChange={(e) => {
+                setEditedPost(e.target.value);
+                console.log(e.target.value);
+              }}
+              name="body"
+              type="text"
+              style={{ "margin-top": "20px" }}
+            />
+            <Button type="submit" color="teal">
+              Submit
+            </Button>
+          </Form.Field>
+        </Form>
+      ) : null}
     </>
   );
 }

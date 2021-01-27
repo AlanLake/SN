@@ -24,7 +24,17 @@ module.exports = {
         throw new Error(err);
       }
     },
-  },
+    async getPostsByUser(_, { username }){
+      try {
+        const posts = await Post.find({ username: username }).sort({
+          createdAt: -1,
+        });
+        return posts
+    }catch (err) {
+        throw new Error(err);
+      }
+  }
+},
   Mutation: {
     async createPost(_, { body }, context) {
       const user = checkAuth(context);

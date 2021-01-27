@@ -14,6 +14,7 @@ export default function SinglePost(props) {
   const postId = props.match.params.postId;
   const { user } = useContext(AuthContext);
 
+  
   const commentInputRef = useRef(null);
   const [comment, setComment] = useState("");
 
@@ -74,21 +75,29 @@ export default function SinglePost(props) {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{ id, likeCount, likes }} />
-                <Popup content='Comment on post' inverted trigger={<Button
-                  as="div"
-                  labelPosition="right"
-                  onClick={() => commentInputRef.current.focus()}
-                >
-                  <Button basic color="blue">
-                    <Icon name="comments" />
-                  </Button>
-                  <Label basic color="blue" pointing="left">
-                    {commentCount}
-                  </Label>
-                </Button>} />
-                {user && user.username === username && (<>
-                  <EditButton postId={id} body={body}></EditButton>
-                  <DeleteButton postId={id} callback={deletePostCallback} /></>
+                <Popup
+                  content="Comment on post"
+                  inverted
+                  trigger={
+                    <Button
+                      as="div"
+                      labelPosition="right"
+                      onClick={() => commentInputRef.current.focus()}
+                    >
+                      <Button basic color="blue">
+                        <Icon name="comments" />
+                      </Button>
+                      <Label basic color="blue" pointing="left">
+                        {commentCount}
+                      </Label>
+                    </Button>
+                  }
+                />
+                {user && user.username === username && (
+                  <>
+                    <EditButton postId={id} body={body}></EditButton>
+                    <DeleteButton postId={id} callback={deletePostCallback} />
+                  </>
                 )}
               </Card.Content>
             </Card>
