@@ -6,7 +6,7 @@ import { Button, Form, Icon, Popup } from "semantic-ui-react";
 export default function EditButton({postId }) {
   const [openEdit, setOpenEdit] = useState(false);
    const [editedPost,setEditedPost] = useState('')
-  const [editPost, { loading, error }] = useMutation(EDIT_POST_MUTATION, {
+  const [editPost] = useMutation(EDIT_POST_MUTATION, {
     variables: {postId: postId, body: editedPost},
   });
     function handleEditPost(e){

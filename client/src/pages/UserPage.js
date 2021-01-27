@@ -1,17 +1,21 @@
 import React from "react";
-import { Card, Grid, Transition, Image } from "semantic-ui-react";
+import { Card, Grid, Image } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import PostCard from "../components/PostCard";
+import moment from "moment";
 
 export default function UserPage(props) {
   const username = props.match.params.username;
-    console.log(props.match.params)
-  const {
-    loading,
-    error,
-    data: { getPostsByUser: posts } = {},
-  } = useQuery(FETCH_POSTS_BY_USER, {
+  const { loading,  data: { getPostsByUser: posts } = {} } = useQuery(
+    FETCH_POSTS_BY_USER,
+    {
+      variables: {
+        username,
+      },
+    }
+  );
+  const { data: { getUser: user } = {} } = useQuery(FETCH_USER_INFO, {
     variables: {
       username,
     },
@@ -32,22 +36,30 @@ export default function UserPage(props) {
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
-                <Card.Meta></Card.Meta>
-                <Card.Description></Card.Description>
+                <Card.Meta>
+                  Joined:{" "}
+                  {user && moment(user[0].createdAt).format("MMM Do YY")}
+                </Card.Meta>
+                <Card.Description>{user && user[0].email}</Card.Description>
               </Card.Content>
             </Card>
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Grid columns = {3}>
-      {posts &&
-        posts.map((post) => (
-          
-            <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-              <PostCard post={post} />
-            </Grid.Column>
-          
-        ))}</Grid>
+      <Grid columns={3}>
+        {loading ? (
+          <h1>Loading posts</h1>
+        ) : (
+          <>
+            {posts &&
+              posts.map((post) => (
+                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                  <PostCard post={post} />
+                </Grid.Column>
+              ))}
+          </>
+        )}
+      </Grid>
     </>
   );
 }
@@ -70,6 +82,15 @@ const FETCH_POSTS_BY_USER = gql`
         createdAt
         body
       }
+    }
+  }
+`;
+
+const FETCH_USER_INFO = gql`
+  query($username: String!) {
+    getUser(username: $username) {
+      createdAt
+      email
     }
   }
 `;
