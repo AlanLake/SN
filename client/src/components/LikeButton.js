@@ -14,6 +14,9 @@ export default function LikeButton({ user, post: { id, likeCount, likes } }) {
 
   const [likePost] = useMutation(LIKE_POST_MUTATION, {
     variables: { postId: id },
+    onError(err) {
+      console.log(err);
+    },
   });
 
   const likeButton = user ? (
@@ -27,7 +30,7 @@ export default function LikeButton({ user, post: { id, likeCount, likes } }) {
       </Button>
     )
   ) : (
-    <Button as={Link} color="teal" basic>
+    <Button as={Link} to="/login" color="teal" basic>
       <Icon name="heart" />
     </Button>
   );

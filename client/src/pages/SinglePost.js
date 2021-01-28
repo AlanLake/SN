@@ -9,6 +9,7 @@ import { Button, Icon, Form, Label, Image, Popup } from "semantic-ui-react";
 import DeleteButton from "../components/DeleteButton";
 import { useMutation } from "@apollo/client";
 import EditButton from "../components/EditButton";
+import { Link } from "react-router-dom";
 
 export default function SinglePost(props) {
   const postId = props.match.params.postId;
@@ -68,7 +69,9 @@ export default function SinglePost(props) {
           <Grid.Column width={10}>
             <Card fluid>
               <Card.Content>
-                <Card.Header>{username}</Card.Header>
+                <Card.Header as={Link} to={`/profile/${username}`}>
+                  {username}
+                </Card.Header>
                 <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                 <Card.Description>{body}</Card.Description>
               </Card.Content>
