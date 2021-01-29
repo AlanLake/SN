@@ -2,4 +2,4 @@
 <b>Deployed:</b>
 https://sn-mockup.netlify.app/
 
-Not all features deployed yet
+Not all features are deployed atm
